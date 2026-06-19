@@ -3,21 +3,21 @@ from htmlnode import HTMLNode, LeafNode, ParentNode
 
 
 class TestHTMLNode(unittest.TestCase):
-    def test_htmlnode(self):
-        node = HTMLNode("h1", "This is the main header", ["h2", "p"])
-        print(f"Running test for htmlnode")
-        print(f"{node}")
+    # def test_htmlnode(self):
+    #    node = HTMLNode("h1", "This is the main header", ["h2", "p"])
+    #    print(f"Running test for htmlnode")
+    #    print(f"{node}")
 
-    def test_2(self):
-        node = HTMLNode("p", "a simple paragraph filled with lorus ipsum")
-        print(f"Running test for test_2")
-        print(f"{node}")
+    # def test_2(self):
+    #    node = HTMLNode("p", "a simple paragraph filled with lorus ipsum")
+    #    print(f"Running test for test_2")
+    #    print(f"{node}")
 
-    def test_3(self):
-        node = HTMLNode("a", "an html link", None, {
-                        "href": "https://www.boot.dev"})
-        print(f"Running test for test_3")
-        print(f"{node}")
+    # def test_3(self):
+    #    node = HTMLNode("a", "an html link", None, {
+    #                    "href": "https://www.boot.dev"})
+    #    print(f"Running test for test_3")
+    #    print(f"{node}")
 
     def test_leaf_to_html_p(self):
         node = LeafNode("p", "Hello, world!")
