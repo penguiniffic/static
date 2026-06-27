@@ -7,18 +7,19 @@ from markdown_blocks import (
 from htmlnode import ParentNode
 
 
-def generate_pages_recursive(dir_path_content: str, template_path: str, dest_dir_path: str) -> None:
+def generate_pages_recursive(dir_path_content: str, template_path: str, dest_dir_path: str, basepath: str) -> None:
     for filename in os.listdir(dir_path_content):
         from_path = os.path.join(dir_path_content, filename)
         dest_path = os.path.join(dest_dir_path, filename)
         if os.path.isfile(from_path):
             dest_path = Path(dest_path).with_suffix(".html")
-            generate_page(from_path, template_path, dest_path)
+            generate_page(from_path, template_path, dest_path, basepath)
         else:
-            generate_pages_recursive(from_path, template_path, dest_path)
+            generate_pages_recursive(
+                from_path, template_path, dest_path, basepath)
 
 
-def generate_page(from_path: str, template_path: str, dest_path: str):
+def generate_page(from_path: str, template_path: str, dest_path: str, basepath: str):
     print(
         f"Generating page from {from_path} to {dest_path} using {template_path}")
     validate_path(from_path, True)
@@ -30,15 +31,16 @@ def generate_page(from_path: str, template_path: str, dest_path: str):
     from_markdown_html = markdown_to_html_node(from_markdown_file).to_html()
     h1 = extract_title(from_markdown_file)
 
-    replace_header_template_file = template_file.replace("{{ Title }}", h1)
-    final_template_file = replace_header_template_file.replace(
-        "{{ Content }}", from_markdown_html)
+    template_file = template_file.replace("{{ Title }}", h1)
+    template_file = template_file.replace("{{ Content }}", from_markdown_html)
+    template_file = template_file.replace('href="', f'href="{basepath}"')
+    template_file = template_file.replace('scr="', f'src="{basepath}"')
 
     dest_path_dir = os.path.dirname(dest_path)
     if not os.path.exists(dest_path_dir):
         os.makedirs(dest_path_dir)
 
-    write_file(final_template_file, dest_path)
+    write_file(template_file, dest_path)
 
 
 def validate_path(path: str, check_file: bool):
